@@ -21,6 +21,10 @@
 #include <mach/regs-clock.h>
 #include "wm8994_samsung.h"
 
+#ifdef CONFIG_SND_VOODOO
+#include "wm8994_voodoo.h"
+#endif
+
 // DAC
 #define TUNING_DAC1L_VOL		0xC0		// 610h
 #define TUNING_DAC1R_VOL		0xC0		// 611h
@@ -1987,6 +1991,10 @@ void wm8994_record_main_mic(struct snd_soc_codec *codec)
 		wm8994_set_codec_gain(codec, RECORDING_MODE, RECORDING_GANLITE_MAIN);
 	else
 		wm8994_set_codec_gain(codec, RECORDING_MODE, RECORDING_MAIN);
+
+#ifdef CONFIG_SND_VOODOO_RECORD_PRESETS
+	voodoo_hook_record_main_mic();
+#endif
 }
 
 void wm8994_record_bluetooth(struct snd_soc_codec *codec)
